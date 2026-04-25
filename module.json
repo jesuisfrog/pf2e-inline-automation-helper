@@ -1,0 +1,28 @@
+{
+  "id": "pf2e-inline-automation-helper",
+  "title": "PF2e Inline Automation Helper",
+  "description": "Adds a toolbar dropdown to all ProseMirror text editors in FoundryVTT for quickly inserting PF2e inline automation syntax: @Check, @Damage, @Template and plain roll links.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "system": ["pf2e"],
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/module.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Michael 'Jesuisfrog' Baglio"
+    }
+  ],
+  "url": "https://github.com/jesuisfrog/pf2e-inline-automation-helper",
+  "manifest": "https://github.com/jesuisfrog/pf2e-inline-automation-helper/blob/main/module.json",
+  "download": ""
+}
