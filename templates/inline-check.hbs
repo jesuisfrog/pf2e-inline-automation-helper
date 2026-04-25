@@ -1,0 +1,171 @@
+{{!-- templates/inline-check.hbs --}}
+<div class="pf2e-inline-automation-helper inline-check-dialog">
+  
+  <p class="pia-explainer">{{{t "ReferenceDialog"}}}</p>
+
+  <div class="pia-form-grid">
+    {{!-- ── Check Type ──────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-type-select-preset">Check Type(s)</label>
+      <div class="pia-col">
+        <select id="pia-type-select-preset">
+          {{#each checkTypes}}
+          <option value="{{this.value}}" {{#if (eq this.group "Custom" )}}data-custom="true" {{/if}}>
+            {{this.label}}
+          </option>
+          {{/each}}
+        </select>
+        {{!-- hidden field holds the actual value (may be comma-separated or custom) --}}
+        <input type="hidden" id="pia-type-select" value="fortitude" />
+        <div id="pia-custom-type-row" style="display:none; margin-top:4px;">
+          <input type="text" id="pia-custom-type-input" placeholder="e.g. engineering-lore or arcane,occultism" />
+        </div>
+        <p class="hint">Comma-separated for multiple buttons (e.g. <code>arcane,occultism</code>)</p>
+      </div>
+    </div>
+
+    {{!-- ── DC Method ───────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-dc-method">DC Method</label>
+      <select id="pia-dc-method">
+        <option value="dc">Numeric DC</option>
+        <option value="defense">Target's Defense</option>
+        <option value="against">Against (Stat)</option>
+        <option value="none">(no DC)</option>
+      </select>
+    </div>
+
+    {{!-- Numeric DC --}}
+    <div class="pia-row dc-field" data-method="dc">
+      <label for="pia-dc-value">DC Value</label>
+      <div class="pia-col">
+        <input type="text" id="pia-dc-value" placeholder="e.g. 20 or resolve(@actor.attributes.classDC.value)" />
+        <p class="hint">Supports <code>@self.level</code>, or <code>resolve(@actor.attributes.classDC.value)</code></p>
+      </div>
+    </div>
+
+    {{!-- Defense DC --}}
+    <div class="pia-row dc-field" data-method="defense" style="display:none">
+      <label for="pia-defense-stat">Defense Stat</label>
+      <select id="pia-defense-stat">
+        {{#each defenseStats}}
+        <option value="{{this.value}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{!-- Against --}}
+    <div class="pia-row dc-field" data-method="against" style="display:none">
+      <label for="pia-against-stat">Against Stat</label>
+      <select id="pia-against-stat">
+        {{#each againstStats}}
+        <option value="{{this.value}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="pia-row against-only-field dc-field" data-method="against" style="display:none">
+      <label for="pia-roller-role">Roller Role</label>
+      <div class="pia-col">
+        <select id="pia-roller-role">
+          <option value="">(default)</option>
+          <option value="origin">origin</option>
+          <option value="target">target</option>
+        </select>
+        <p class="hint">Only needed to override the default. Saves default to <em>target</em>, others to
+          <em>origin</em>.</p>
+      </div>
+    </div>
+
+    {{!-- ── Basic Save ──────────────────────────────────────────────── --}}
+    <div class="pia-row save-only-field">
+      <label for="pia-basic">Basic Save</label>
+      <div class="pia-col">
+        <input type="checkbox" id="pia-basic" />
+        <p class="hint">Adds "Basic" prefix and <code>damaging-effect</code> roll option automatically.</p>
+      </div>
+    </div>
+
+    {{!-- ── Show DC ─────────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-show-dc">Show DC To</label>
+      <select id="pia-show-dc">
+        {{#each showDCOptions}}
+        <option value="{{this.value}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{!-- ── Adjustment ──────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-adjustment">DC Adjustment</label>
+      <div class="pia-col">
+        <input type="text" id="pia-adjustment" placeholder="e.g. 2 or 0,-2" />
+        <p class="hint">Integer offset (+/-). Comma-separated per type for multiple buttons.</p>
+      </div>
+    </div>
+
+    {{!-- ── Immutable ───────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-immutable">Immutable DC</label>
+      <div class="pia-col">
+        <input type="checkbox" id="pia-immutable" />
+        <p class="hint">DC won't change from frightened, elite/weak, etc.</p>
+      </div>
+    </div>
+
+    {{!-- ── Name ─────────────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-name">Check Name</label>
+      <input type="text" id="pia-name" placeholder="Displayed on chat card (defaults to item name)" />
+    </div>
+
+    {{!-- ── Traits ──────────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-traits">Extra Traits</label>
+      <div class="pia-col">
+        <input type="text" id="pia-traits" placeholder="e.g. action:long-jump or auditory,secret" />
+        <p class="hint">Item traits are included automatically. Add only <em>extra</em> ones here.</p>
+      </div>
+    </div>
+
+    {{!-- ── Options ──────────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-options">Roll Options</label>
+      <div class="pia-col">
+        <input type="text" id="pia-options" placeholder="e.g. damaging-effect" />
+        <p class="hint">Non-trait roll options. Use for things like <code>damaging-effect</code> on non-basic saves.</p>
+      </div>
+    </div>
+
+    {{!-- ── Override Traits ─────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-override-traits">Override Traits</label>
+      <div class="pia-col">
+        <input type="checkbox" id="pia-override-traits" />
+        <p class="hint">Omit item traits from the roll entirely.</p>
+      </div>
+    </div>
+
+    {{!-- ── Label ────────────────────────────────────────────────────── --}}
+    <div class="pia-row">
+      <label for="pia-label">Link Label</label>
+      <input type="text" id="pia-label" placeholder="Custom display text (optional)" />
+    </div>
+
+  </div>{{!-- .pia-form-grid --}}
+
+  {{!-- Live Preview --}}
+  <div class="pia-preview">
+    <strong>Preview:</strong> <code>@Check[fortitude|dc:]</code>
+  </div>
+
+  <div class="pia-buttons">
+    <button type="button" data-action="insert" class="pia-btn-primary">
+      <i class="fa-solid fa-check"></i> Insert
+    </button>
+    <button type="button" data-action="cancel">
+      <i class="fa-solid fa-times"></i> Cancel
+    </button>
+  </div>
+
+</div>

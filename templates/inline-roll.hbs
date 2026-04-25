@@ -1,0 +1,62 @@
+{{!-- templates/inline-roll.hbs --}}
+<div class="pf2e-inline-automation-helper inline-roll-dialog">
+
+  <p class="pia-explainer">
+    Use this for <strong>non-damage</strong> rolls — recharge timers, healing amounts, or any value you want to output to chat.
+    For damage rolls, use the <em>@Damage</em> dialog instead.
+    <br><br>
+    {{{t "ReferenceDialog"}}}
+  </p>
+
+  <div class="pia-form-grid">
+
+    <div class="pia-row">
+      <label for="pia-formula">Formula</label>
+      <input type="text" id="pia-formula" placeholder="e.g. 1d4 or 1d20+17" />
+    </div>
+
+    <div class="pia-row">
+      <label for="pia-flavor">Flavor / Tag</label>
+      <div class="pia-col">
+        <input type="text" id="pia-flavor"
+               placeholder="e.g. Recharge Breath Weapon or Counteract" />
+        <p class="hint">Added as <code>#Flavor</code> inside the roll brackets.</p>
+      </div>
+    </div>
+
+    <div class="pia-row">
+      <label for="pia-gm-roll">GM-Only Roll</label>
+      <div class="pia-col">
+        <input type="checkbox" id="pia-gm-roll" />
+        <p class="hint">Uses <code>[[/gmr ...]]</code> — roll result is hidden from players.</p>
+      </div>
+    </div>
+
+    <div class="pia-row">
+      <label for="pia-label">Link Label</label>
+      <div class="pia-col">
+        <input type="text" id="pia-label"
+               placeholder="Custom display text (optional, wraps in { })" />
+        <p class="hint">
+          Example: <code>[[/gmr 1d4 #Recharge]]{1d4 rounds}</code> shows
+          <em>"1d4 rounds"</em> as the button text.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pia-preview">
+    <strong>Preview:</strong> <code>[[/r ]]</code>
+  </div>
+
+  <div class="pia-buttons">
+    <button type="button" data-action="insert" class="pia-btn-primary">
+      <i class="fa-solid fa-check"></i> Insert
+    </button>
+    <button type="button" data-action="cancel">
+      <i class="fa-solid fa-times"></i> Cancel
+    </button>
+  </div>
+
+</div>

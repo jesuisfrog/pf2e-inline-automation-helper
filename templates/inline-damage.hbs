@@ -1,0 +1,106 @@
+{{!-- templates/inline-damage.hbs --}}
+<div class="pf2e-inline-automation-helper inline-damage-dialog">
+
+  <p class="pia-explainer">{{{t "ReferenceDialog"}}}</p>
+  <hr />
+
+  {{!-- Syntax mode --}}
+  <div class="pia-row pia-row--checkbox">
+    <input type="checkbox" id="pia-use-at-damage" checked />
+    <label for="pia-use-at-damage">
+      Use <code>@Damage</code> syntax <em>(recommended — supports rule elements &amp; elite/weak adjustments)</em>
+    </label>
+  </div>
+
+  <hr />
+
+  {{!-- Damage Pools --}}
+  <p class="pia-section-heading">Damage Pools</p>
+  <p class="hint">
+    Each pool is a separate group of dice. Multiple pools are combined into one roll
+    (e.g. <code>5d6[acid],5d6[cold]</code>).
+  </p>
+
+  <div id="pia-pools-container">
+    {{#each pools}}
+    <div class="pia-pool-row" data-pool-index="{{@index}}">
+      <div class="pia-pool-inner">
+        <div class="pia-pool-field">
+          <label>Formula</label>
+          <input type="text" class="pia-formula" value="{{this.formula}}"
+                 placeholder="e.g. 1d6 or (2d6+4)" />
+        </div>
+        <div class="pia-pool-field">
+          <label>Type</label>
+          <select class="pia-type">
+            {{#each ../damageTypes}}
+              <option value="{{this.value}}"
+                {{#if (eq this.value ../type)}}selected{{/if}}>
+                {{this.label}}
+              </option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="pia-pool-field">
+          <label>Category</label>
+          <select class="pia-category">
+            {{#each ../categories}}
+              <option value="{{this.value}}"
+                {{#if (eq this.value ../../category)}}selected{{/if}}>
+                {{this.label}}
+              </option>
+            {{/each}}
+          </select>
+        </div>
+        {{#if (gt @../pools.length 1)}}
+        <button type="button" class="pia-remove-pool" data-action="remove-pool"
+                data-pool-index="{{@index}}" title="Remove this pool">
+          <i class="fa-solid fa-times"></i>
+        </button>
+        {{/if}}
+      </div>
+      <p class="hint pia-pool-hint" data-pool-index="{{@index}}">
+        Precision &amp; Splash use inner parentheses automatically.
+        Persistent is combined with the type (no inner parens).
+      </p>
+    </div>
+    {{/each}}
+  </div>
+
+  <button type="button" data-action="add-pool" class="pia-add-pool">
+    <i class="fa-solid fa-plus"></i> Add Damage Pool
+  </button>
+
+  <hr />
+
+  {{!-- Roll Options --}}
+  <div class="pia-row">
+    <label for="pia-options">Roll Options</label>
+    <div class="pia-col">
+      <input type="text" id="pia-options"
+             placeholder="e.g. area-damage, damage:material:silver,damage:material:cold-iron" />
+      <p class="hint">Comma-separated. These are <em>roll options</em>, not traits.</p>
+    </div>
+  </div>
+
+  {{!-- Label --}}
+  <div class="pia-row">
+    <label for="pia-label">Link Label</label>
+    <input type="text" id="pia-label" placeholder="Custom display text (optional)" />
+  </div>
+
+  {{!-- Live Preview --}}
+  <div class="pia-preview">
+    <strong>Preview:</strong> <code>@Damage[]</code>
+  </div>
+
+  <div class="pia-buttons">
+    <button type="button" data-action="insert" class="pia-btn-primary">
+      <i class="fa-solid fa-check"></i> Insert
+    </button>
+    <button type="button" data-action="cancel">
+      <i class="fa-solid fa-times"></i> Cancel
+    </button>
+  </div>
+
+</div>

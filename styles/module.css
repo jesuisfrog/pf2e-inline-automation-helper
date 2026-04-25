@@ -1,0 +1,319 @@
+/* ============================================================================
+   pf2e-inline-automation-helper | module.css
+
+   Design philosophy:
+   - Use Foundry's own CSS custom properties for all colors so the dialogs
+     automatically match whatever theme (light / dark / custom) the user has.
+   - Only add layout and structural rules ourselves.
+   - Never force specific colors on native form elements (<select>, <option>).
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   Foundry v13 CSS variable reference (defined on :root by Foundry/theme)
+     --color-text-primary    Main readable text
+     --color-text-secondary  Subdued / hint text
+     --color-bg-option       Input / form field background
+     --color-border          Standard border colour
+     --color-warm-1…5        PF2e system warm accent ramp
+   --------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   Module-level accent custom properties
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper {
+  --pia-accent:       var(--color-warm-3, #8b1200);
+  --pia-accent-hover: var(--color-warm-4, #b31800);
+  --pia-radius:       4px;
+  --pia-gap:          8px;
+}
+
+/* ---------------------------------------------------------------------------
+   Toolbar dropdown button icon
+   --------------------------------------------------------------------------
+   Foundry inserts `icon` as a raw text node, so CSS ::before with a FA unicode code point is unreliable in Foundry's embedded browser environment.
+   Instead, main.js uses a MutationObserver to prepend a real
+   <i class="fa-solid fa-dice-d20 pia-icon"> element into our button.
+   This rule just ensures the injected icon is sized and spaced correctly.
+   --------------------------------------------------------------------------- */
+button.pf2e-inline-automation-helper-dropdown i.pia-icon {
+  font-size: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+   Window / dialog shell
+   Let Foundry's .window-content handle background and base text color.
+   --------------------------------------------------------------------------- */
+.app.pf2e-inline-automation-helper .window-content {
+  padding: 10px 12px 12px;
+  overflow-y: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Explainer paragraph
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper .pia-explainer {
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  border-left: 3px solid var(--pia-accent);
+  background: var(--color-bg-option, rgba(0,0,0,.08));
+  border-radius: 0 var(--pia-radius) var(--pia-radius) 0;
+  color: var(--color-text-secondary, inherit);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.pf2e-inline-automation-helper .pia-section-heading {
+  font-weight: bold;
+  margin: 8px 0 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Form grid
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper .pia-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pia-gap);
+}
+
+.pf2e-inline-automation-helper .pia-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: start;
+  gap: 4px 8px;
+}
+
+.pf2e-inline-automation-helper .pia-row--checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: unset;
+}
+
+.pf2e-inline-automation-helper .pia-row label {
+  font-weight: 600;
+  padding-top: 4px;
+  line-height: 1.3;
+}
+
+.pf2e-inline-automation-helper .pia-row--checkbox label {
+  padding-top: 0;
+  font-weight: normal;
+}
+
+.pf2e-inline-automation-helper .pia-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Inputs & selects
+   Use Foundry's variables — do NOT set explicit text/bg colours so native
+   <select>/<option> rendering stays readable in every OS theme.
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper input[type="text"],
+.pf2e-inline-automation-helper input[type="number"],
+.pf2e-inline-automation-helper select,
+.pf2e-inline-automation-helper textarea {
+  border: 1px solid var(--color-border, #888);
+  border-radius: var(--pia-radius);
+  padding: 4px 6px;
+  font-size: 0.8125rem;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--color-bg-option, field);
+  color: var(--color-text-primary, fieldtext);
+}
+
+.pf2e-inline-automation-helper input[type="text"]:focus,
+.pf2e-inline-automation-helper input[type="number"]:focus,
+.pf2e-inline-automation-helper select:focus {
+  border-color: var(--pia-accent);
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--pia-accent) 25%, transparent);
+}
+
+.pf2e-inline-automation-helper input[type="checkbox"] {
+  accent-color: var(--pia-accent);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Hint / helper text
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper .hint,
+.pf2e-inline-automation-helper p.hint {
+  color: var(--color-text-secondary, inherit);
+  opacity: 0.8;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.pf2e-inline-automation-helper .hint code,
+.pf2e-inline-automation-helper p.hint code {
+  background: var(--color-bg-option, rgba(0,0,0,.1));
+  border: 1px solid var(--color-border, #aaa);
+  border-radius: 3px;
+  padding: 0 3px;
+  font-size: 0.7rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Damage pool rows
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper .pia-pool-row {
+  border: 1px solid var(--color-border, #888);
+  border-radius: var(--pia-radius);
+  padding: 8px;
+  background: var(--color-bg-option, rgba(0,0,0,.05));
+  margin-bottom: 4px;
+}
+
+.pf2e-inline-automation-helper .pia-pool-inner {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.pf2e-inline-automation-helper .pia-pool-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 100px;
+  min-width: 80px;
+}
+
+.pf2e-inline-automation .pia-pool-field label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary, inherit);
+  opacity: 0.85;
+}
+
+.pf2e-inline-automation-helper .pia-pool-hint {
+  margin-top: 4px;
+}
+
+.pf2e-inline-automation-helper .pia-remove-pool {
+  background: transparent;
+  border: 1px solid var(--color-border, #888);
+  border-radius: var(--pia-radius);
+  color: var(--color-text-secondary, inherit);
+  cursor: pointer;
+  padding: 4px 7px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  align-self: flex-end;
+  line-height: 1;
+}
+
+.pf2e-inline-automation-helper .pia-remove-pool:hover {
+  border-color: #d44;
+  color: #d44;
+}
+
+.pf2e-inline-automation-helper .pia-add-pool {
+  background: transparent;
+  border: 1px dashed var(--color-border, #888);
+  border-radius: var(--pia-radius);
+  color: var(--color-text-secondary, inherit);
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 0.8125rem;
+  width: 100%;
+  text-align: center;
+  margin-top: 2px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.pf2e-inline-automation-helper .pia-add-pool:hover {
+  border-color: var(--pia-accent);
+  color: var(--color-text-primary, inherit);
+}
+
+/* ---------------------------------------------------------------------------
+   Live preview area
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper .pia-preview {
+  margin: 12px 0 8px;
+  padding: 8px 10px;
+  background: var(--color-bg-option, rgba(0,0,0,.08));
+  border: 1px solid var(--color-border, #888);
+  border-radius: var(--pia-radius);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+
+.pf2e-inline-automation-helper .pia-preview strong {
+  color: var(--color-text-secondary, inherit);
+  opacity: 0.8;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.pf2e-inline-automation-helper .pia-preview code {
+  color: var(--color-warm-3, #8b4513);
+  font-family: monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------------
+   HR separator
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper hr {
+  border: none;
+  border-top: 1px solid var(--color-border, #888);
+  margin: 10px 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Button row
+   --------------------------------------------------------------------------- */
+.pf2e-inline-automation-helper .pia-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.pf2e-inline-automation-helper .pia-buttons button {
+  padding: 5px 14px;
+  border-radius: var(--pia-radius);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.pf2e-inline-automation-helper .pia-buttons .pia-btn-primary {
+  background: var(--pia-accent);
+  border: 1px solid var(--pia-accent-hover);
+  color: #fff;
+  font-weight: 600;
+}
+
+.pf2e-inline-automation-helper .pia-buttons .pia-btn-primary:hover {
+  background: var(--pia-accent-hover);
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive: narrow windows
+   --------------------------------------------------------------------------- */
+@media (max-width: 420px) {
+  .pf2e-inline-automation-helper .pia-row {
+    grid-template-columns: 1fr;
+  }
+
+  .pf2e-inline-automation-helper .pia-row label {
+    padding-top: 0;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "PF2EIAH": {
+    "ModuleTitle": "PF2e Inline Automation Helper",
+    "DropdownTitle": "PF2e Automation",
+    "CheckDialog": {
+      "Title": "Insert Inline Check"
+    },
+    "DamageDialog": {
+      "Title": "Insert Inline Damage"
+    },
+    "RollDialog": {
+      "Title": "Insert Inline Roll"
+    },
+    "TemplateDialog": {
+      "Title": "Insert Inline Template"
+    },
+    "ReferenceDialog": {
+      "Title": "Please refer to the <a href=\"https://github.com/foundryvtt/pf2e/wiki/Style-Guide\">PF2e Style Guide</a> for details on how to format custom inline elements."
+    }
+  }
+}

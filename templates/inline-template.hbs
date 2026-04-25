@@ -1,0 +1,86 @@
+{{!-- templates/inline-template.hbs --}}
+<div class="pf2e-inline-automation-helper inline-template-dialog">
+
+  <p class="pia-explainer">
+    Creates a clickable button that places a measured template on the canvas.
+    Uses PF2e shape names (<em>not</em> Foundry shape names).
+    <br><br>
+    {{{t "ReferenceDialog"}}}
+
+  </p>
+
+  <div class="pia-form-grid">
+
+
+
+    {{!-- Type --}}
+    <div class="pia-row">
+      <label for="pia-type">Template Type</label>
+      <select id="pia-type">
+        {{#each types}}
+          <option value="{{this.value}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{!-- Distance --}}
+    <div class="pia-row">
+      <label for="pia-distance">Distance (feet)</label>
+      <input type="number" id="pia-distance" min="1" step="5" placeholder="e.g. 20" />
+    </div>
+
+    {{!-- Width (line only) --}}
+    <div class="pia-row width-field" style="display:none">
+      <label for="pia-width">Width (feet)</label>
+      <div class="pia-col">
+        <input type="number" id="pia-width" min="5" step="5"
+               placeholder="e.g. 10 (leave blank for default 5 ft)" />
+        <p class="hint">
+          Omit for a standard 5-foot-wide line. Set equal to Distance to create a
+          <strong>square</strong> template (e.g. Distance 20 + Width 20 = 20-foot square).
+        </p>
+      </div>
+    </div>
+
+    {{!-- Traits --}}
+    <div class="pia-row">
+      <label for="pia-traits">Traits</label>
+      <div class="pia-col">
+        <input type="text" id="pia-traits"
+               placeholder="e.g. fire,evocation (usually leave blank)" />
+        <p class="hint">
+          Optional. Item traits are included automatically for system data.
+          Leave blank unless you need to explicitly override them.
+        </p>
+      </div>
+    </div>
+
+    {{!-- Label --}}
+    <div class="pia-row">
+      <label for="pia-label">Link Label</label>
+      <div class="pia-col">
+        <input type="text" id="pia-label"
+               placeholder="Auto-generated if blank (e.g. 30-Foot Emanation)" />
+        <p class="hint">
+          The style guide recommends using the auto-generated label in most cases.
+          Override for auras where the word "emanation" is typically dropped.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pia-preview">
+    <strong>Preview:</strong> <code>@Template[type:emanation|distance:?]</code>
+  </div>
+
+  <div class="pia-buttons">
+    <button type="button" data-action="insert" class="pia-btn-primary">
+      <i class="fa-solid fa-check"></i> Insert
+    </button>
+    <button type="button" data-action="cancel">
+      <i class="fa-solid fa-times"></i> Cancel
+    </button>
+  </div>
+
+</div>
